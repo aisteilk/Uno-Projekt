@@ -1,0 +1,26 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Es können nur Karten auf die vorgegebene Karte gelegt werden,
+wenn entweder die Farbe die gleiche ist oder der Kartenwert derselbe.
+Z.B. auf eine ROT "drei" darf entweder eine ROT "zwei" oder eine BLAU "drei" gelegt werden.
+Die Eingabe der Kartenwerte erfolgt auf diese Weise:
+ 
+ROT:    R-Wert
+GRÜN:   G-Wert
+BLAU:   B-Wert
+GELB:   Y-Wert
+SCHWARZ: S-Wert
+
+Richtungswechsel: RW
+Aussetzen: OUT
+PLUS2: +2
+Farbwahl: WILD
+PLUS4: +4
+
+... Beispiele für eine richtige Eingabe sind: r-9 oder s-+4.
+
+Wenn du UNO rufen willst, gib nach den Werten für Farbe und Wert noch ein U dazu: r-9-u
+
+Um eine Karte vom Nachziehstapel zu ziehen, gib "HEBEN" ein.
+Kannst du nach 1x Heben noch immer nicht legen, gib "WEITER" ein, um zum nächsten Spieler zu
+wechseln.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

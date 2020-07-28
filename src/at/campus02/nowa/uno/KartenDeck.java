@@ -7,97 +7,74 @@ import java.util.*;
  zusätzlich 4x Schwarz Wild und 4x Schwarz +4
  */
 
-public class KartenDeck extends ArrayList<UnoKarte> {
+public class KartenDeck {
 
-    private ArrayList<UnoKarte> kartenDeck;                      // eine Liste vom Typ UnoKarte wird deklariert
+    private final ArrayList<UnoKarte> CardDeck;         // die kompletten Karten werden in eine AL gespeichert
+    public Queue<UnoKarte> drawPile;                // für die jeweiligen Runden werden die gemischten Karten in eine Queue gespeichert
 
-    public KartenDeck() {                                   // Konstruktor
+    public KartenDeck() {
 
-        kartenDeck = new ArrayList<>();                     // die ArrayListe wird initialisiert
+        CardDeck = new ArrayList<>();
+        drawPile = new LinkedList<>();
     }
 
-    public void makeDeck() {                                // Methode zum Befüllen des Karten-Arrays
-        Farbe[] colors = Farbe.values();                    // ein Farbarray wird erstellt mit den Werten der Enums
-                                                            // (Rot, Grün, Blau, Yellow, Schwarz)
-        Kartenwert[] values = Kartenwert.values();          // ein Kartenarray mit den Werten der Enums erstellen
+    // ~~~~~~ Methode zum Befüllen des Karten-Arrays ~~~~~~
+    public void makeDeck() {
+        Farbe[] colors = Farbe.values();                    // Farbarray mit den Werten der Enums (Rot, Grün, Blau, Yellow, Schwarz)
+        Kartenwert[] values = Kartenwert.values();          // Kartenarray mit den Werten der Enums
 
-        int index = 0;                                      // ein kartenindex wird erstellt
+        int cardIndex = 0;                                  // Kartenindex
+
         // i = Farbindex = 0, length-1, weil schwarz nicht mit iteriert werden soll, i = 0 bedeutet ROT
         for (int i = 0; i < colors.length - 1; i++) {
 
-            kartenDeck.add(new UnoKarte(colors[i], Kartenwert.getWert(0)));     //todo: UnoKarte[0] = rot 0
-            index++;                                                            //kartenindex 1
+            CardDeck.add(new UnoKarte(colors[i], Kartenwert.getWert(0)));     // Null gibt es nur jeweils 1x (UnoKarte[0] = rot 0)
+            cardIndex++;
 
             // j = werteindex, endet bei .length -2, weil WILD + PLUS 4 nicht mititeriert werden
-            for (int j = 1; j < values.length - 2; j++) {                       // j = werteindex = 1          | j=2                    ..| j=9                   | j=10                    | j=11                          | j=12
-                kartenDeck.add(new UnoKarte(colors[i], Kartenwert.getWert(j))); // todo: UnoKarte[1] = rot 1   | UnoKarte[3] = rot 2    ..| UnoKarte[17] = rot 9  | UnoKarte[19] = rot +2   | UnoKarte[21] = rot RW         | UnoKarte[23] = rot OUT
-                index++;                                                        //kartenindex 2                | kartenindex 4          ..| kartenindex 18        | kartenindex 20          | kartenindex 22                | kartenindex 24
-                kartenDeck.add(new UnoKarte(colors[i], values[j]));             // todo: UnoKarte[2] = rot 1   | UnoKarte[4] = rot 2    ..| UnoKarte[18] = rot 9  | UnoKarte[20] = rot +2   | karUnoKarteten[22] = rot RW   | UnoKarte[24] = rot OUT
-                index++;                                                        //kartenindex 3                | kartenindex 5          ..| kartenindex 19        | kartenindex 21          | kartenindex 23                | kartenindex 25
-                                                                                // gehen in der 1. inneren for-schleife weiter
-                                                                                //--> j=2                      | j=3                    ..| j=10                  | j=11                    | j=12                        ..| j=13= values.length --> fertig
-            } //  --> 1.innere for schleife fertig --> farbindex = 1 (grün) --> die grünen karten werden erstellt, usw.
+            for (int j = 1; j < values.length - 2; j++) {
+                CardDeck.add(new UnoKarte(colors[i], values[j]));
+                cardIndex++;
+                CardDeck.add(new UnoKarte(colors[i], values[j]));
+                cardIndex++;
+            } // innere for schleife fertig --> farbindex = 1 (grün) --> die grünen karten werden erstellt, usw.
         }
 
-        // schwarze Farbwahlkarte WILD
+        // schwarze Farbwahlkarte WILD 4x
         for (int i = 0; i < 4; i++) {
-            kartenDeck.add(new UnoKarte(colors[4], values[values.length - 2]));
-            index++;
+            CardDeck.add(new UnoKarte(colors[4], values[values.length - 2]));
+            cardIndex++;
         }
 
-        // schwarze Plus 4
+        // schwarze Plus 4, 4x
         for (int i = 0; i < 4; i++) {
-            kartenDeck.add(new UnoKarte(colors[4], values[values.length-1]));
-            index++;
+            CardDeck.add(new UnoKarte(colors[4], values[values.length-1]));
+            cardIndex++;
         }
 
-        // Ausgabe index + Karte
-        /*for (int i = 0; i < kartenDeck.size(); i++){
-            System.out.println(i + " " + kartenDeck.get(i).toString());
-        }*/
-
-        //Ausgabe nur karte
-        for (UnoKarte u : kartenDeck) {
-            System.out.println(u);
-        }
     }
 
-    public void shuffleDeck(){
-        Collections.shuffle(kartenDeck);
+    // Methode zum Mischen der Karten
+    public void shuffleDeck() {
+        Collections.shuffle(CardDeck);
 
-        for (UnoKarte u : kartenDeck) {
-            System.out.println(u);
-        }
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX");
+        drawPile.addAll(CardDeck);     // alle gemischten Karten aus der ArrayList werden der Queue hinzugefügt
+
     }
 
-    // todo: aus den gemischten Karte 7 zufällige Karten ziehen und sie in die ArrayListe HandKarten adden
-    public ArrayList<UnoKarte> makePlayerDeck1(Spieler spieler){
+    // Methode: von den gemischten Karten die 7 obersten Karten nehmen und sie der Liste HandKarten hinzufügen
+    public LinkedList<UnoKarte> makePlayerDeck(){
 
-        ArrayList<UnoKarte> handKarten = new ArrayList<>();
+        LinkedList<UnoKarte> handCards = new LinkedList<>();
         int count = 7;
-        Random random = new Random();
 
-        /*if (kartenDeck.isEmpty()){              // wenn der Stapel leer ist
-            throw new IllegalArgumentException("Kartenstapel ist leer, mischen Sie die Karten des Ablagestapels neu.");
-        }
-        if (count > kartenDeck.size()){         // wenn der Stapel nicht mehr genug Karten hat
-            throw new IllegalArgumentException("Es sind nicht genug Karten am Stapel. Mischen Sie die Karten des " +
-                    "Ablagestapels neu.");
-        }*/
-        for (int i = 0; i < count; i++){
-            // aus dem bestehenden Kartendeck wird ein zufälliges Element ausgewählt, das nicht größer sein darf
-            // als die Größe des Kartendecks
-            UnoKarte randomElement = kartenDeck.get(random.nextInt(kartenDeck.size()));
-            handKarten.add(randomElement);  // dieses zufällige Element wird dem HandKarten-Set hinzugefügt
+        for (int i = 0; i < count; i++) {
+            // aus dem geshuffelten Kartendeck werden die obersten 7 Karten genommen und dem handkarten-deck zugewiesen
+            UnoKarte obersteKarte = drawPile.remove();
+            handCards.add(obersteKarte);
         }
 
-        for (UnoKarte u : handKarten) {
-            System.out.println(u);
-        }
-        System.out.println(".............");
-        return handKarten;
-
+        return handCards;
     }
 }
 

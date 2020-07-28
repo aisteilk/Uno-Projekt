@@ -8,10 +8,13 @@ public class Main {
 
         App app = new App(input, System.out);
 
-        System.out.println("UNO wird nun gestartet ...");
+        System.out.println("\n******* Herzlich willkommen zu einer neuen Partie UNO! *******");
+        System.out.println("\nDas Spiel wird nun gestartet ...");
+        System.out.println();
         app.Run();
 
         input.close();
         System.out.println("UNO wird beendet ...");
+
     }
 }

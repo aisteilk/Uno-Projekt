@@ -1,24 +1,52 @@
 package at.campus02.nowa.uno;
 
-import java.util.ArrayList;
-
-import java.util.Random;
+import java.util.LinkedList;
 
 public class Spieler {
     private String name;
-    private int counterRestkarten;
-    private int punkte;
-    private ArrayList<UnoKarte> handKarten;
+    private int points;
+    private LinkedList<UnoKarte> handCardDeck;
 
-    public Spieler(String name, int counterRestkarten, int punkte) {
+    public Spieler(String name) {
         this.name = name;
-        this.counterRestkarten = counterRestkarten;
-        this.punkte = punkte;
-        handKarten = new ArrayList<>();
+
+        this.points = 0;    //anfänglich immer 0
+        handCardDeck = new LinkedList<>();
     }
 
-    public ArrayList<UnoKarte> getHandKarten(){
-        return handKarten;
+    // Vergleich der eingegebenen Karte mit dem Handkartenset. Ist die Karte im Handkartenset enthalten?
+    public UnoKarte getKarte(Farbe f, Kartenwert kw) {
+        for (UnoKarte handKarte : handCardDeck) {
+            if (handKarte.getFARBE() == f && handKarte.getKARTENWERT() == kw) {
+                return handKarte;
+            }
+        }
+        return null;
+    }
+
+    public UnoKarte validPlus4Turn(Farbe f, Kartenwert kw) {
+        for (UnoKarte handKarte : handCardDeck) {
+            if (handKarte.getFARBE() == f || handKarte.getKARTENWERT() == kw) {
+                return handKarte;
+            }
+        }
+        return null;
+    }
+
+    public UnoKarte getFirstPlus2(UnoKarte previousCard) {
+        for (UnoKarte u : getHandCardDeck()) {
+            if (App.validPlus2(u, previousCard))
+                return u;
+        }
+        return null;
+    }
+
+    public LinkedList<UnoKarte> getHandCardDeck() {
+        return handCardDeck;
+    }
+
+    public void setHandCardDeck(LinkedList<UnoKarte> handCardDeck) {
+        this.handCardDeck = handCardDeck;
     }
 
     public String getName() {
@@ -29,46 +57,21 @@ public class Spieler {
         this.name = name;
     }
 
-    public int getCounterRestkarten() {
-        return counterRestkarten;
+    public int getPoints() {
+        return points;
     }
 
-    public void setCounterRestkarten(int counterRestkarten) {
-        this.counterRestkarten = counterRestkarten;
+    public void setPoints(int points) {
+        this.points = points;
     }
 
-    public int getPunkte() {
-        return punkte;
+    public boolean isBot() {
+        return this instanceof Bot;
     }
 
-    public void setPunkte(int punkte) {
-        this.punkte = punkte;
-    }
-
-    public ArrayList<UnoKarte> makePlayerDeck(ArrayList<UnoKarte> kartenDeck) {
-
-        ArrayList<UnoKarte> handKarten = new ArrayList<>();
-        int count = 7;
-        Random random = new Random();
-
-        /*if (kartenDeck.isEmpty()){              // wenn der Stapel leer ist
-            throw new IllegalArgumentException("Kartenstapel ist leer, mischen Sie die Karten des Ablagestapels neu.");
-        }
-        if (count > kartenDeck.size()){         // wenn der Stapel nicht mehr genug Karten hat
-            throw new IllegalArgumentException("Es sind nicht genug Karten am Stapel. Mischen Sie die Karten des " +
-                    "Ablagestapels neu.");
-        }*/
-        for (int i = 0; i < count; i++) {
-            // aus dem bestehenden Kartendeck wird ein zufälliges Element ausgewählt, das nicht größer sein darf
-            // als die Größe des Kartendecks
-            UnoKarte randomElement = kartenDeck.get(random.nextInt(kartenDeck.size()));
-            handKarten.add(randomElement);  // dieses zufällige Element wird dem HandKarten-Set hinzugefügt
-        }
-
-        for (UnoKarte u : handKarten) {     // nur zum Anzeigen der Handkarten
-            System.out.println(u);
-        }
-        return handKarten;
+    @Override
+    public String toString() {
+        return "Spieler Name: " + name + ", Punkte = " + points +
+                ", Handkarten: " + handCardDeck + '\n';
     }
 }
-

@@ -1,0 +1,77 @@
+
+TESTEN:
+alle möglichen abwegigen kombinationen
+b4
+B4
+b-4
+BB-4
+b-14
+etc.
+auf die Fehlerausgaben achten --> passen die mit dem Spielzug überein?
+
+__________________________________________________________________________________
+Hilfe nur 1x einlesen --> in Stringbuilder abspeichern und nur mehr Stringbuilder ausgeben lassen
+--> ressourcenschonender als jedes Mal BufferedReader aufzurufen
+__________________________________________________________________________________
+__________________________________________________________________________________
+BEREITS ERLEDIGT/IMPLEMENTIERT
+
+BOTs haben nur die Möglichkeit, eine Karte zu legen oder zu heben.
+Sie haben nicht die Möglichkeit, nach dem Heben einer Karte nochmals zu prüfen, ob
+sie dann legen könnten
+
+BOTS: UNO-Ruf implementieren
+
+__________________________________________________________________________________
+Uno rufen: wenn nur mehr 1 Karte im Handkartenset eines Spielers vorhanden ist, muss er die Möglichkeit haben, "UNO
+zu rufen". --> UserInput erweitern
+Strafe für nicht UNO rufen folgt automatisch
+__________________________________________________________________________________
+
+18.07.
+Rundenende implementiert,
+Bot-Eingabe falsche Eingabe ausgebessert (while statt if),
+Ablagestapel von Linked List zu Stack geändert
+UNO rufen beim menschlichen Spieler integriert
+Hilfe erweitert
+Plus2 auf Plus2 funktioniert sowohl bei Bot als auch Mensch
+
+_______________
+
+wenn die Eingabe falsch erfolgt ohne Bindestrich, dann ist das Stringarray nur bei index[0] gefüllt,
+bei index[1] ist nix drin --> Exception
+
+__________________________________________________________________________________
+Spieler - Bots vs. Menschen
+__________________________________________________________________________________
++2: wenn man als nächstes bei einer +2 dran ist und nicht kann (auch nicht nach heben), bleibt die +2 aufrecht und der
+nächste spieler wird ebenfalls übersprungen und bekommt 2 karten
+--> ACHTUNG passiert bei jeder Sonderkarte!!!! --> ERLEDIGT: playedAlready
+__________________________________________________________________________________
++2:
+was ist, wenn der nächste Spieler eine weitere +2 drauflegen kann...
+Detailanforderung 21+22
+__________________________________________________________________________________
+RichtungsWechsel
+-----
+Detailanforderung 28
+__________________________________________________________________________________
+
+heben
+--> danach nochmalige prüfung, ob karte gelegt werden kann. wenn dann wieder nicht gelegt werden kann
+--> nächster spieler --> ERLEDIGT ("weiter" Funktion)
+-----
+man könnte auch mehrmals hintereinander heben... muss verhindert werden!!! --> ERLEDIGT
+
+__________________________________________________________________________________
++4 und WILD: Farbwunsch
+----
+gewünschte farbe wird erkannt, karte auf stack heißt dann z.b. ROT "PLUS4" --> PROBLEM:
+wenn der nächste spieler keine passende farbe zum drauflegen hat auf die gewünschte farbe, dann bleibt der Kartenwert
+"PLUS4" erhalten und es kommt erneut zum Farbwunsch
+--> müssen "Standard-Wert" für KartenWERT setzen, Standardwert ist 0 --> ERLEDIGT
+(könnte dann aber zum Problem werden, weil man dann ja auch passend zum Wert und nicht passend zur Farbe
+legen kann!!!!) --> bleibt derweil so
+--> ERLEDIGT durch Einführung playedAlready --> es gibt kein Standardwert
+----
+loop für falscheingabe der farbe muss noch implementiert werden --> ERLEDIGT
